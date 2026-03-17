@@ -1,0 +1,28 @@
+{
+  "model": "SVR",
+  "params": {
+    "C": {
+      "type": "real",
+      "bounds": [0.01, 100.0],
+      "prior": "log-uniform"
+    },
+    "kernel": {
+      "type": "categorical",
+      "categories": ["rbf","linear"]
+    },
+    "gamma": {
+      "type": "categorical",
+      "categories": ["scale", "auto", 0.000001, 0.0001, 0.001, 0.01, 0.1]
+    },
+    "max_iter": {
+      "type": "integer",
+      "bounds": [1000, 20000]
+    },
+    "epsilon": {
+      "type": "real",
+      "bounds": [1.0, 50.0],
+      "prior": "log-uniform"
+    }
+  },
+  "fixed_params": {}
+}

@@ -1,0 +1,10 @@
+{
+  "model": "GaussianProcessClassifier",
+  "params": {},
+  "fixed_params": {
+    "random_state": 42,
+    "n_restarts_optimizer": 10,
+    "max_iter_predict": 300,
+    "kernel": "ConstantKernel(1.0, constant_value_bounds=(1e-3, 1e3)) * RBF(1.0, length_scale_bounds=(1e-2, 1e2)) + WhiteKernel(noise_level=1e-5, noise_level_bounds=(1e-8, 1e-1))"
+  }
+}

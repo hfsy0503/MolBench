@@ -1,0 +1,13 @@
+{
+  "model": "GaussianNB",
+  "params": {
+    "var_smoothing": {
+      "type": "real",
+      "bounds": [0.000000000001, 0.001],
+      "prior": "log-uniform"
+    }
+  },
+  "fixed_params": {
+    "var_smoothing": 0.000000001
+  }
+}

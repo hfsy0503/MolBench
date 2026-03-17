@@ -1,0 +1,53 @@
+{
+    "model": "BenchGNN",
+    "module": "molbench.core.adapters.gnn_adapter",
+    "task_type": "binary",
+    "protocol": "bench",
+    "search_space": {
+        "hidden_dim": {
+            "type": "integer",
+            "bounds": [
+                32,
+                128
+            ]
+        },
+        "dropout": {
+            "type": "real",
+            "bounds": [
+                0.0,
+                0.5
+            ]
+        },
+        "lr": {
+            "type": "real",
+            "bounds": [
+                0.0001,
+                0.01
+            ],
+            "prior": "log-uniform"
+        },
+        "epochs": {
+            "type": "integer",
+            "bounds": [
+                10,
+                100
+            ]
+        },
+        "num_heads": {
+            "type": "integer",
+            "bounds": [1, 8]
+        }
+    },
+    "fixed_params": {
+        "out_dim": 1,
+        "model_name": "TransformerConv",
+        "batch_size": 32,
+        "num_layers": 2,
+        "concat": true,
+        "beta": true,
+        "task_type": "binary",
+        "random_state": 42,
+        "use_edge_features": false,
+        "kw": null
+    }
+}

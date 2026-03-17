@@ -1,0 +1,63 @@
+# MolBench 基础运行配置文件：【单模型快速评测】
+
+# 数据集配置
+dataset:
+  name: ESOL                    # 数据集名称
+  path: molbench/core/data/datasets/delaney-processed.csv  # 数据集本地路径
+  task_type: regression
+  smiles_col:
+   - smiles
+  target_cols:
+   - ESOL predicted log solubility in mols per litre
+  split:
+    method: random              # 划分方法：random, scaffold, stratified, time
+    train_ratio: 0.7
+    val_ratio: 0.2
+    test_ratio: 0.1
+    seed: 42                    # 随机种子，确保可复现
+  
+  # 多任务数据集需要指定目标列（可选）
+  # target_col: solubility      # ESOL是单任务，无需指定
+
+# 模型配置
+models:
+  - name: RandomForestRegressor
+    type: sklearn
+    protocol: sklearn
+    
+    hyperopt_config: test/random_forest_regressor.json
+  
+  # 多模型对比示例（取消注释启用）
+  # - name: GCN
+  #   type: gnn
+  #   protocol: bench
+  #   hyperopt_config: test/GCN.json
+
+# 特征化配置（sklearn模型）
+featurizer:
+  name: ecfp                    # ecfp, coulomb, mol2vec, rdkit2d……
+  params:
+    radius: 2
+    n_bits: 2048
+
+# 贝叶斯优化配置
+optimization:
+  n_iter: 30  # 全局默认
+  
+# 评测配置
+evaluation:
+  extra_metrics:                      # 额外评估指标
+    - Pearson_r
+    - F1_macro
+  
+  # 可视化
+  visualization: true
+  save_plots: true
+  output_dir: ./results
+
+# 系统配置
+system:
+  cache: true                   # 启用磁盘缓存
+  cache_dir: ./.molbench_cache
+  verbose: true
+  n_jobs: 1                    # 并行作业数，-1表示全部CPU

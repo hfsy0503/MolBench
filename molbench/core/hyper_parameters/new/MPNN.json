@@ -1,0 +1,50 @@
+{
+    "model": "BenchGNN",
+    "module": "molbench.core.adapters.gnn_adapter",
+    "task_type": "binary",
+    "protocol": "bench",
+    "search_space": {
+        "hidden_dim": {
+            "type": "integer",
+            "bounds": [
+                32,
+                64
+            ]
+        },
+        "dropout": {
+            "type": "real",
+            "bounds": [
+                0.0,
+                0.5
+            ]
+        },
+        "lr": {
+            "type": "real",
+            "bounds": [
+                0.0001,
+                0.01
+            ],
+            "prior": "log-uniform"
+        },
+        "epochs": {
+            "type": "integer",
+            "bounds": [
+                10,
+                100
+            ]
+        }
+    },
+    "fixed_params": {
+        "out_dim": 1,
+        "model_name": "MPNN",
+        "num_step_message_passing": 6,
+        "batch_size": 32,
+        "node_feat_dim": 39,
+        "edge_feat_dim": 10, 
+        "aggr": "add",
+        "task_type": "binary",
+        "random_state": 42,
+        "use_edge_features": false,
+        "kw": null
+    }
+}

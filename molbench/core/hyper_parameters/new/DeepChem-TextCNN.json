@@ -1,0 +1,57 @@
+{
+    "model": "DeepChemTextCNN",
+    "module": "core.adapters.text_models",
+    "task_type": "regression",
+    "protocol": "bench",
+    "search_space": {
+        "lr": {
+            "type": "real",
+            "bounds": [
+                0.0005,
+                0.002
+            ],
+            "prior": "log-uniform"
+        },
+        "epochs": {
+            "type": "integer",
+            "bounds": [
+                50,
+                300
+            ]
+        },
+        "n_embedding": {
+            "type": "integer",
+            "bounds": [
+                64,
+                256
+            ]
+        },
+        "dropout": {
+            "type": "real",
+            "bounds": [
+                0.2,
+                0.5
+            ]
+        }
+    },
+    "fixed_params": {
+        "model_name": "DeepChem-TextCNN",
+        "n_tasks": 1,
+        "n_embedding": 128,
+        "kernel_sizes": [
+            3,
+            4,
+            5
+        ],
+        "filter_sizes": [
+            100,
+            200,
+            100
+        ],
+        "dropout": 0.5,
+        "kw": null,
+        "model_path": "deepchem-textcnn",
+        "lr": 0.001,
+        "epochs": 100
+    }
+}

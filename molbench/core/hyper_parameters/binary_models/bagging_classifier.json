@@ -1,0 +1,30 @@
+{
+  "model": "BaggingClassifier",
+  "params": {
+    "n_estimators": {
+      "type": "integer",
+      "bounds": [10, 100]
+    },
+    "max_samples": {
+      "type": "real",
+      "bounds": [0.1, 1.0],
+      "prior": "uniform"
+    },
+    "max_features": {
+      "type": "real",
+      "bounds": [0.1, 1.0],
+      "prior": "uniform"
+    },
+    "bootstrap": {
+      "type": "categorical",
+      "categories": [true, false]
+    },
+    "bootstrap_features": {
+      "type": "categorical",
+      "categories": [true, false]
+    }
+  },
+  "fixed_params": {
+    "random_state": 42
+  }
+}

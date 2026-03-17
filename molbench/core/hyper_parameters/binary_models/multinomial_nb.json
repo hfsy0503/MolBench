@@ -1,0 +1,15 @@
+{
+  "model": "MultinomialNB",
+  "params": {
+    "alpha": {
+      "type": "real",
+      "bounds": [0.000001, 0.1],
+      "prior": "log-uniform"
+    },
+    "fit_prior": {
+      "type": "categorical",
+      "categories": [true, false]
+    }
+  },
+  "fixed_params": {}
+}

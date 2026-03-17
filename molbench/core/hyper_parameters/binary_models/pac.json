@@ -1,0 +1,36 @@
+{
+  "model": "PassiveAggressiveClassifier",
+  "params": {
+    "C": {
+      "type": "real",
+      "bounds": [1e-4, 1e3],
+      "prior": "log-uniform"
+    },
+    "loss": {
+      "type": "categorical",
+      "categories": ["hinge", "squared_hinge"]
+    },
+    "fit_intercept": {
+      "type": "categorical",
+      "categories": [true, false]
+    },
+    "max_iter": {
+      "type": "integer",
+      "bounds": [100, 2000]
+    },
+    "tol": {
+      "type": "real",
+      "bounds": [1e-6, 1e-1],
+      "prior": "log-uniform"
+    },
+    "class_weight": {
+      "type": "categorical",
+      "categories": [null, "balanced"]
+    },
+    "shuffle": {
+      "type": "categorical",
+      "categories": [true, false]
+    }
+  },
+  "fixed_params": {}
+}

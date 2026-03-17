@@ -1,0 +1,32 @@
+{
+  "model": "KNeighborsClassifier",
+  "params": {
+    "n_neighbors": {
+      "type": "integer",
+      "bounds": [1, 50]
+    },
+    "weights": {
+      "type": "categorical",
+      "categories": ["uniform", "distance"]
+    },
+    "p": {
+      "type": "integer",
+      "bounds": [1, 3]
+    },
+    "leaf_size": {
+      "type": "integer",
+      "bounds": [10, 100]
+    },
+    "algorithm": {
+      "type": "categorical",
+      "categories": ["auto", "ball_tree", "kd_tree", "brute"]
+    },
+    "metric": {
+      "type": "categorical",
+      "categories": ["minkowski", "euclidean", "manhattan"]
+    }
+  },
+  "fixed_params": {
+    "weights": "distance"
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "model": "TheilSenRegressor",
+  "params": {},
+  "fixed_params": {}
+}

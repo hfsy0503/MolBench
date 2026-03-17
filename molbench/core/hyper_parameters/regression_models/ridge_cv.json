@@ -1,0 +1,11 @@
+{
+  "model": "RidgeCV",
+  "params": {
+    "alphas": {
+      "type": "real",
+      "bounds": [0.000001, 1000000.0],
+      "prior": "log-uniform"
+    }
+  },
+  "fixed_params": {}
+}

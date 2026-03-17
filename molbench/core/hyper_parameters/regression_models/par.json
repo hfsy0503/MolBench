@@ -1,0 +1,5 @@
+{
+  "model": "PassiveAggressiveRegressor",
+  "params": {},
+  "fixed_params": {}
+}

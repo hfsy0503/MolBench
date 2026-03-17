@@ -1,0 +1,29 @@
+{
+    "model": "ExtraTreesClassifier",
+    "params": {
+      "n_estimators": {
+        "type": "integer",
+        "bounds": [50, 200]
+      },
+      "max_depth": {
+        "type": "integer",
+        "bounds": [3, 20]
+      },
+      "min_samples_split": {
+        "type": "integer",
+        "bounds": [2, 20]
+      },
+      "min_samples_leaf": {
+        "type": "integer",
+        "bounds": [1, 20]
+      },
+      "max_features": {
+        "type": "real",
+        "bounds": [0.1, 1.0],
+        "prior": "uniform"
+      }
+    },
+    "fixed_params": {
+      "random_state": 42
+    }
+  }

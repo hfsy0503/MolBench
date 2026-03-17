@@ -1,0 +1,18 @@
+{
+  "model": "KNeighborsRegressor",
+  "params": {
+    "n_neighbors": {
+      "type": "integer",
+      "bounds": [1, 10]
+    },
+    "weights": {
+      "type": "categorical",
+      "categories": ["uniform", "distance"]
+    },
+    "algorithm": {
+      "type": "categorical",
+      "categories": ["auto", "ball_tree", "kd_tree", "brute"]
+    }
+  },
+  "fixed_params": {}
+}

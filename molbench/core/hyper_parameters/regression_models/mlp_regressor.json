@@ -1,0 +1,38 @@
+{
+  "model": "MLPRegressor",
+  "params": {
+    "hidden_layer_sizes": {
+      "type": "integer",
+      "bounds": [10, 100]
+    },
+    "activation": {
+      "type": "categorical",
+      "categories": ["identity", "logistic", "tanh", "relu"]
+    },
+    "solver": {
+      "type": "categorical",
+      "categories": ["lbfgs", "sgd", "adam"]
+    },
+    "alpha": {
+      "type": "real",
+      "bounds": [0.000001, 0.1],
+      "prior": "log-uniform"
+    },
+    "learning_rate": {
+      "type": "categorical",
+      "categories": ["constant", "invscaling", "adaptive"]
+    },
+    "learning_rate_init": {
+      "type": "real",
+      "bounds": [0.0001, 0.1],
+      "prior": "log-uniform"
+    },
+    "max_iter": {
+      "type": "integer",
+      "bounds": [100, 1000]
+    }
+  },
+  "fixed_params": {
+    "random_state": 42
+  }
+}

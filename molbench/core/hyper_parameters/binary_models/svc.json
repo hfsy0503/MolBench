@@ -1,0 +1,26 @@
+{
+  "model": "SVC",
+  "params": {
+    "C": {
+      "type": "real",
+      "bounds": [0.1, 10.0],
+      "prior": "log-uniform"
+    },
+    "kernel": {
+      "type": "categorical",
+      "categories": ["linear", "poly", "rbf", "sigmoid"]
+    },
+    "gamma": {
+      "type": "real",
+      "bounds": [0.000001, 0.1],
+      "prior": "log-uniform"
+    },
+    "max_iter": {
+      "type": "integer",
+      "bounds": [100, 1000]
+    }
+  },
+  "fixed_params": {
+    "random_state": 42
+  }
+}

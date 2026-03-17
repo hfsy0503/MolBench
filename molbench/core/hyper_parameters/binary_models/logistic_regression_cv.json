@@ -1,0 +1,12 @@
+{
+  "model": "LogisticRegressionCV",
+  "params": {
+    "max_iter": {
+      "type": "integer",
+      "bounds": [100, 1000]
+    }
+  },
+  "fixed_params": {
+    "random_state": 42
+  }
+}

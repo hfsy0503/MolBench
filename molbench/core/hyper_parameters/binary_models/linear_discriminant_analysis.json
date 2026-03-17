@@ -1,0 +1,14 @@
+{
+  "model": "LinearDiscriminantAnalysis",
+  "params": {
+    "solver": {
+      "type": "categorical",
+      "categories": ["lsqr"]
+    },
+    "shrinkage": {
+      "type": "real",
+      "bounds": [0.0, 1.0]
+    }
+  },
+  "fixed_params": {}
+}

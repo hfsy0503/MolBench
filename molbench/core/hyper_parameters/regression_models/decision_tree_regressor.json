@@ -1,0 +1,24 @@
+{
+  "model": "DecisionTreeRegressor",
+  "params": {
+    "max_depth": {
+      "type": "integer",
+      "bounds": [1, 10]
+    },
+    "min_samples_split": {
+      "type": "integer",
+      "bounds": [2, 10]
+    },
+    "min_samples_leaf": {
+      "type": "integer",
+      "bounds": [1, 10]
+    },
+    "max_features": {
+      "type": "categorical",
+      "categories": ["sqrt", "log2"]
+    }
+  },
+  "fixed_params": {
+    "random_state": 42
+  }
+}

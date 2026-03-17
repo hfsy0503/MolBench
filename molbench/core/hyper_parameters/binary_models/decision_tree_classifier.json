@@ -1,0 +1,41 @@
+{
+  "model": "DecisionTreeClassifier",
+  "params": {
+    "criterion": {
+      "type": "categorical",
+      "categories": ["gini", "entropy"]
+    },
+    "splitter": {
+      "type": "categorical",
+      "categories": ["best", "random"]
+    },
+    "max_depth": {
+      "type": "integer",
+      "bounds": [3, 30]
+    },
+    "min_samples_split": {
+      "type": "integer",
+      "bounds": [2, 50]
+    },
+    "min_samples_leaf": {
+      "type": "integer",
+      "bounds": [1, 50]
+    },
+    "max_features": {
+      "type": "categorical",
+      "categories": [null, "sqrt", "log2", 0.1, 0.25, 0.5]
+    },
+    "class_weight": {
+      "type": "categorical",
+      "categories": [null, "balanced"]
+    },
+    "ccp_alpha": {
+      "type": "real",
+      "bounds": [1e-8, 0.01],
+      "prior": "log-uniform"
+    }
+  },
+  "fixed_params": {
+    "random_state": 42
+  }
+}

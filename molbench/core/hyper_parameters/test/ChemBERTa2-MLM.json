@@ -1,0 +1,39 @@
+{
+    "model": "HFTextModel",
+    "module": "molbench.core.adapters.text_adapter",
+    "task_type": "regression",
+    "protocol": "bench",
+    "search_space": {
+        "lr": {
+            "type": "real",
+            "bounds": [
+                1e-05,
+                5e-05
+            ],
+            "prior": "log-uniform"
+        },
+        "weight_decay": {
+            "type": "real",
+            "bounds": [
+                0.0,
+                0.1
+            ]
+        },
+        "dropout":{
+            "type":"real",
+            "bounds":[0.0, 0.3]
+        }
+    },
+    "fixed_params": {
+        "model_name": "ChemBERTa2-MLM",
+        "model_path": "DeepChem/ChemBERTa-77M-MLM",
+        "num_classes": 1,
+        "kw": null,
+        "max_len": 128,
+        "epochs": 5,
+        "batch_size":32,
+        "pooling":"cls",
+        "random_state":42,
+        "trust_remote_code": false
+    }
+}

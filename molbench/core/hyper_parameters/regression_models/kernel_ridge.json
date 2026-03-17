@@ -1,0 +1,5 @@
+{
+  "model": "KernelRidge",
+  "params": {},
+  "fixed_params": {}
+}

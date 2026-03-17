@@ -1,0 +1,31 @@
+{
+  "model": "BayesianRidge",
+  "params": {
+    "tol": {
+      "type": "real",
+      "bounds": [0.00001, 0.1],
+      "prior": "log-uniform"
+    },
+    "alpha_1": {
+      "type": "real",
+      "bounds": [0.000001, 0.1],
+      "prior": "log-uniform"
+    },
+    "alpha_2": {
+      "type": "real",
+      "bounds": [0.000001, 0.1],
+      "prior": "log-uniform"
+    },
+    "lambda_1": {
+      "type": "real",
+      "bounds": [0.000001, 0.1],
+      "prior": "log-uniform"
+    },
+    "lambda_2": {
+      "type": "real",
+      "bounds": [0.000001, 0.1],
+      "prior": "log-uniform"
+    }
+  },
+  "fixed_params": {}
+}

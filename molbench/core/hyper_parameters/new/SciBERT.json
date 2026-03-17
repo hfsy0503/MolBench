@@ -1,0 +1,33 @@
+{
+    "model": "HFTextModel",
+    "module": "core.adapters.text_models",
+    "task_type": "regression",
+    "protocol": "bench",
+    "search_space": {
+        "lr": {
+            "type": "real",
+            "bounds": [
+                1e-05,
+                5e-05
+            ],
+            "prior": "log-uniform"
+        },
+        "weight_decay": {
+            "type": "real",
+            "bounds": [
+                0.0,
+                0.1
+            ]
+        }
+    },
+    "fixed_params": {
+        "model_name": "SciBERT",
+        "model_path": "allenai/scibert_scivocab_uncased",
+        "num_classes": 1,
+        "kw": null,
+        "max_len": 128,
+        "epochs": 3,
+        "batch_size":64,
+        "trust_remote_code": false
+    }
+}

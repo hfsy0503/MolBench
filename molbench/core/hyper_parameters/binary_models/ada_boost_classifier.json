@@ -1,0 +1,18 @@
+{
+  "model": "AdaBoostClassifier",
+  "params": {
+    "n_estimators": {
+      "type": "integer",
+      "bounds": [50, 200],
+      "prior": "log-uniform"
+    },
+    "learning_rate": {
+      "type": "real",
+      "bounds": [0.05, 1.0],
+      "prior": "log-uniform"
+    }
+  },
+  "fixed_params": {
+    "random_state": 42
+  }
+}

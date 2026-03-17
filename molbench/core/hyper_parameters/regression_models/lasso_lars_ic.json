@@ -1,0 +1,18 @@
+{
+  "model": "LassoLarsIC",
+  "params": {
+    "criterion": {
+      "type": "categorical",
+      "categories": ["aic", "bic"]
+    },
+    "max_iter": {
+      "type": "integer",
+      "bounds": [100, 500]
+    }
+  },
+  "fixed_params": {
+    "precompute": false,
+    "eps": 1e-6,
+    "fit_intercept": true
+  }
+}

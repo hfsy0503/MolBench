@@ -1,0 +1,21 @@
+{
+  "model": "AdaBoostRegressor",
+  "params": {
+    "n_estimators": {
+      "type": "integer",
+      "bounds": [10, 500]
+    },
+    "learning_rate": {
+      "type": "real",
+      "bounds": [0.01, 1.0],
+      "prior": "log-uniform"
+    },
+    "loss": {
+      "type": "categorical",
+      "categories": ["linear", "square", "exponential"]
+    }
+  },
+  "fixed_params": {
+    "random_state": 42
+  }
+}

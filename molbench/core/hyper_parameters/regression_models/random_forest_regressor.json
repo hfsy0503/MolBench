@@ -1,0 +1,28 @@
+{
+  "model": "RandomForestRegressor",
+  "params": {
+    "n_estimators": {
+      "type": "int",
+      "bounds": [10, 500]
+    },
+    "max_depth": {
+      "type": "int", 
+      "bounds": [1, 30]
+    },
+    "min_samples_split": {
+      "type": "int",
+      "bounds": [2, 20]
+    },
+    "min_samples_leaf": {
+      "type": "int",
+      "bounds": [1, 20]
+    },
+    "max_features": {
+      "type": "float",
+      "bounds": [0.1, 1.0]
+    }
+  },
+  "fixed_params": {
+    "random_state": 42
+  }
+}

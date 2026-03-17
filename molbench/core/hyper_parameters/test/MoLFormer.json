@@ -1,0 +1,36 @@
+{
+    "model": "HFTextModel",
+    "module": "molbench.core.adapters.text_adapter",
+    "task_type": "regression",
+    "protocol": "bench",
+    "search_space": {
+        "lr": {
+            "type": "real",
+            "bounds": [
+                1e-05,
+                5e-05
+            ],
+            "prior": "log-uniform"
+        },
+        "weight_decay": {
+            "type": "real",
+            "bounds": [
+                0.001,
+                0.01
+            ]
+        }
+    },
+    "fixed_params": {
+        "model_name": "MoLFormer-XL",
+        "model_path": "ibm/MoLFormer-XL-both-10pct",
+        "num_classes": 1,
+        "max_len": 202,
+        "epochs": 5,
+        "batch_size": 32,
+        "random_state": 42,
+        "warmup_ratio": 0.1,
+        "dropout": 0.1,
+        "trust_remote_code": true,
+        "use_fast": true
+    }
+}

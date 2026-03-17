@@ -1,0 +1,83 @@
+# MolBench 高级配置文件：多模型对比 + 超参数优化 + 交叉验证
+
+dataset:
+  name: QM8
+  source: molnet
+  split:
+    method: random
+    seed: 42
+  
+  # QM8是多任务数据集，指定多个目标列
+  target_cols:
+    - E1-CC2
+    - E2-CC2
+    - f1-CC2
+
+models:
+  # GNN模型组
+  - name: GAT
+    type: gnn
+    protocol: bench
+    params:
+      hidden_dim: 64
+      num_heads: 4
+      dropout: 0.1
+    hyperopt:
+      n_iter: 30                # 贝叶斯优化迭代次数
+      space:
+        hidden_dim: [32, 64, 128, 256]
+        dropout: [0.0, 0.5]
+        lr: [1e-4, 1e-2]
+  
+  - name: GCN
+    type: gnn
+    protocol: bench
+    params:
+      hidden_dim: 64
+    hyperopt:
+      n_iter: 30
+      space:
+        hidden_dim: [32, 64, 128]
+        num_layers: [2, 3, 4]
+
+  # 传统机器学习模型组
+  - name: RandomForestRegressor
+    type: sklearn
+    protocol: sklearn
+    params:
+      n_estimators: 500
+    hyperopt:
+      n_iter: 30
+      space:
+        max_depth: [5, 10, 20, null]
+        min_samples_split: [2, 5, 10]
+
+  - name: SVR
+    type: sklearn
+    protocol: sklearn
+    hyperopt:
+      n_iter: 30
+      space:
+        C: [0.1, 1.0, 10.0]
+        kernel: [linear, rbf]
+
+featurizer:
+  name: ecfp
+  params:
+    radius: 2
+    n_bits: 2048
+
+evaluation:
+  metrics:
+    - mae
+    - rmse
+    - r2
+  cross_validation:             # 启用交叉验证
+    enabled: true
+    n_folds: 5
+  visualization: true
+  output_dir: ./results/qm8_comparison
+
+system:
+  cache: true
+  verbose: true

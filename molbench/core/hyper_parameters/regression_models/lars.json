@@ -1,0 +1,13 @@
+{
+  "model": "Lars",
+  "params": {
+    "fit_intercept": {
+      "type": "categorical",
+      "categories": [true, false]
+    }
+  },
+  "fixed_params": {
+    "precompute": false,
+    "n_nonzero_coefs": 30
+  }
+}
