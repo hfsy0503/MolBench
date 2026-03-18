@@ -200,3 +200,4 @@ class evaluation:
                     func = EXTRA_CLF_METRICS[name]
                     metrics[f'{dataset_type}_{name}'] = func(y_true, y_pred)
             return metrics
+        

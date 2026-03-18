@@ -37,7 +37,7 @@
     "fixed_params": {
         "model_name": "GCN",
         "task_type": "binary",
-         "out_dim": 1,
+        "out_dim": 1,
         "batch_size": 32,
         "num_layers": 2,
         "random_state": 42,

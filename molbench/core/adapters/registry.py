@@ -123,7 +123,7 @@ GNN_MODEL_REGISTRY = {
 if __name__ == '__main__':
     import os, sys
     sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'utils')))
-    from model_register import register_model
+    from core.utils.model_register import register_model
     
     for name, config in GNN_MODEL_REGISTRY.items():
         search_space = config['search_space']

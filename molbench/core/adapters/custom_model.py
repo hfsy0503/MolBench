@@ -29,7 +29,7 @@ class CustomModel(BenchModel):          # 1. 改类名
 if __name__ == '__main__':
     import sys, os
     sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'utils')))
-    from model_register import register_model
+    from core.utils.model_register import register_model
     register_model(CustomModel, task_type='regression',
                    save_dir=r'molbench\core\hyper_parameters\test',
                    protocol='bench') # 可自行改路径

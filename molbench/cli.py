@@ -55,7 +55,7 @@ def create_parser():
     
     # 生成配置时的输出路径
     parser.add_argument('-o', '--output', 
-                       help='生成配置的输出路径')
+                       help='生成配置的输出路径(仅与 -g 配合使用)')
     
     # 信息查询
     parser.add_argument('--list-templates', action='store_true',
