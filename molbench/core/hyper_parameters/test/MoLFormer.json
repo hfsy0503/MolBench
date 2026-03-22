@@ -1,7 +1,7 @@
 {
     "model": "HFTextModel",
     "module": "molbench.core.adapters.text_adapter",
-    "task_type": "regression",
+    "task_type": "binary",
     "protocol": "bench",
     "search_space": {
         "lr": {
@@ -23,9 +23,10 @@
     "fixed_params": {
         "model_name": "MoLFormer-XL",
         "model_path": "ibm/MoLFormer-XL-both-10pct",
+        "task_type": "binary",
         "num_classes": 1,
-        "max_len": 202,
-        "epochs": 5,
+        "max_len": 128,
+        "epochs": 2,
         "batch_size": 32,
         "random_state": 42,
         "warmup_ratio": 0.1,

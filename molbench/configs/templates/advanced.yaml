@@ -1,22 +1,24 @@
-# MolBench 高级配置文件：多模型对比 + 超参数优化 + 交叉验证
+# MolBench 高级配置文件：多模型对比 + 超参数优化
 
 dataset:
   name: QM8
-  source: molnet
-  split:
-    method: random
-    seed: 42
-  
+  path: core/data/datasets/qm8.csv
+  smiles_col:
+   - smiles
   # QM8是多任务数据集，指定多个目标列
   target_cols:
     - E1-CC2
     - E2-CC2
     - f1-CC2
+  split:
+    method: random
+    seed: 42
 
 models:
   # GNN模型组
   - name: GAT
     type: gnn
+    module: molbench.core.adapters.gnn_adapter
     protocol: bench
     params:
       hidden_dim: 64
@@ -31,6 +33,7 @@ models:
   
   - name: GCN
     type: gnn
+    module: molbench.core.adapters.gnn_adapter
     protocol: bench
     params:
       hidden_dim: 64
@@ -68,13 +71,7 @@ featurizer:
     n_bits: 2048
 
 evaluation:
-  metrics:
-    - mae
-    - rmse
-    - r2
-  cross_validation:             # 启用交叉验证
-    enabled: true
-    n_folds: 5
+  extra_metrics: none
   visualization: true
   output_dir: ./results/qm8_comparison
 

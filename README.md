@@ -3,7 +3,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 
-MolBench 是一个专为分子机器学习设计的基准测试框架，支持回归、二分类和多分类任务，提供统一的数据集、模型适配器、超参数优化、评估指标与结果可视化功能。
+MolBench 是一个专为分子机器学习设计的基准测试框架，支持回归、二分类任务，提供统一的数据集、模型适配器、超参数优化、评估指标与结果可视化功能。
 
 ## 📁 项目结构
 ```plain
@@ -30,20 +30,20 @@ MolBench/
 │   │   ├── evaluation/       # 评估指标与可视化
 │   │   └── utils/            # 工具函数（优化/缓存/日志）
 │   └── results/              # 评测结果存储
-├── tests/                    
-└── docs/                     
+├── docs/                     # 用户文档
+└── tests/                     
 ```
 
-## ✨特性
+## ✨ 关于 MolBench
 
-- **多任务支持**：回归（r²）、二分类/多分类（ROC-AUC、Accuracy）
+- **多任务支持**：回归（R²）、二分类/多分类（ROC-AUC、Accuracy）
 - **多模态输入**：SMILES 字符串 + 可选表格特征
 - **丰富特征化**：ECFP、MACCS、Mol2Vec、RDKit 2D 描述符、Coulomb Matrix 等
 - **模型适配器**：统一接口支持 sklearn、XGBoost、GNN（PyG）、Transformer（HuggingFace）
 - **智能优化**：贝叶斯超参数搜索
 - **灵活配置**：YAML/JSON 配置文件驱动，支持交互式与批量模式
 
-## 📦安装
+## 📦 安装
 
 ### 环境要求
 
@@ -60,7 +60,11 @@ MolBench/
 
 2. 安装依赖：
    ```bash
-   pip install -r requirements.txt
+    pip install torch==2.9.1 torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
+
+    pip install torch-geometric
+
+    pip install -r requirements.txt
    ```
 
 3. 安装 MolBench：
@@ -72,36 +76,70 @@ MolBench/
 
 ### 命令行使用
 
-#### 交互模式
+#### 1. 交互模式
+
+输入下列指令，即可按照命令行提示开启评测运行：
 
 ```bash
-molbench -m molbench
+python -m molbench
 ```
 
-#### 配置文件模式
+#### 2. 配置文件模式
 ```bash
-molbench --config config.yaml
+# 使用内置模板进行单模型快速评测
+molbench -t basic
 ```
 
-#### Python API
+#### 3. Python API
 ```python
-import molbench
+import pandas as pd
+from molbench.core import run_benchmark
 
-config = {
-    "dataset": "ESOL",
-    "task_type": "regression",
-    "models": [
-        {"name": "RandomForestRegressor"},
-        {"name": "XGBRegressor"}
-    ],
-    "featurizer": "ecfp",
-    "optimization": {
-        "n_calls": 50,
-        "cv_folds": 5
-    }
-}
-results = molbench.run(config)
-print(results.summary())
+df = pd.read_csv('your_data.csv') # 准备数据
+results = run_benchmark(
+    # 数据参数
+    df=df,
+    file_base='experiment_1',
+    smiles_col='smiles',
+    feature_cols=['smiles'],      # 其他特征列（可选）
+    target_cols=['solubility'],   # 支持多个目标列
+    task_type='regression',       # 或 'binary'
+    
+    # 模型配置
+    sklearn_models={
+        'XGBoostRegressor': {
+            "search_space": {
+                "lr": {"type": "real", "bounds": [0.01, 0.3]},
+                "max_depth": {"type": "int", "bounds": [3, 10]}
+            },
+            "fixed_params": {"n_estimators": 100}
+        }
+    },
+    graph_models={
+        'GCN': {
+            "fixed_params": {"hidden_dim": 64, "num_layers": 3}
+        }
+    },
+    text_models={
+        'ChemBERTa-77M-MLM': {
+            "fixed_params": {"model_path": "DeepChem/ChemBERTa-77M-MLM"}
+        }
+    },
+    
+    # 特征化参数（用于 sklearn 模型）
+    featurizer_name='ecfp',      
+    featurizer_params={'radius': 2, 'nBits': 1024},
+    
+    # 评测参数
+    split_method='random',
+    split_seed=42,
+    n_iter=3,                    # 贝叶斯优化迭代次数
+    cache_enabled=True,
+    verbose=True
+)
+
+# 查看结果
+print(results)
 ```
 
 
@@ -115,10 +153,10 @@ print(results.summary())
 ## 🚀 支持的模型
 
 ### 传统机器学习（sklearn + XGBoost + LGBM）
-- 回归（30+）：RandomForest、XGBRegressor、SVR、LGBM 等
+- 回归（30+）：RandomForest、XGBRegressor、SVR 等
 - 分类（20+）：LogisticRegression、XGBClassifier、SVC 等
 ### 图神经网络（PyTorch Geometric）
-- GCN、GAT、GraphSAGE、GIN、MPNN、SchNet 等
+- GCN、GAT、GraphSAGE、GIN、MPNN 等
 ### 预训练语言模型（Transformers）
 - ChemBERTa-77M-MTR
 - ChemBERTa-77M-MLM
@@ -128,7 +166,6 @@ print(results.summary())
 ## 🤝 贡献
 
 欢迎贡献！请查看我们的贡献指南 CONTRIBUTING.md 了解详情。
-
 
 
 ## 📄 许可证

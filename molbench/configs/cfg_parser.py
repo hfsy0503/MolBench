@@ -12,7 +12,9 @@ HYPERPARAM_DIR = Path(__file__).parent.parent / "core" / "hyper_parameters"
 
 class ConfigParser:
     """配置解析器：YAML -> runner_engine 所需变量"""
-    
+
+    DEFAULT_CONFIG_DIR = Path(__file__).parent /"templates"
+
     @classmethod
     def load_for_runner(cls, config_path: Union[str, Path]) -> Dict[str, Any]:
         """
@@ -52,6 +54,7 @@ class ConfigParser:
                     Path.cwd(),          # 当前工作目录
                     HYPERPARAM_DIR.parent.parent,  # molbench 项目根目录
                 ]
+                
                 for base in bases:
                     full_path = base / data_path
                     if full_path.exists():
@@ -110,7 +113,7 @@ class ConfigParser:
 
         # 评测配置
         eval_config = config.get('evaluation', {})
-        runner_vars['extra_metrics'] = eval_config.get('extra_metrics', False)
+        runner_vars['extra_metrics'] = eval_config.get('extra_metrics', )
         runner_vars['output_dir'] = eval_config.get('output_dir', './results')
         runner_vars['visualization'] = eval_config.get('visualization', True)
         
@@ -145,34 +148,59 @@ class ConfigParser:
         json_configs = {}
         
         for model in models:
-            name = model['name']
+            original_name = model['name']
+            model_type = model.get('type', 'sklearn')
+            protocol = model.get('protocol', 'sklearn')
+
+            if model_type == 'gnn':    
+                cfg_model_name = 'BenchGNN'  # 使用通用适配器
+            elif model_type == 'text':   
+                cfg_model_name = 'HFTextModel'
+            else:
+                cfg_model_name = original_name
+
             cfg = {
-                'model': name,
-                'type': model.get('type', 'sklearn'),
-                'protocol': model.get('protocol', 'sklearn'),
+                'model': cfg_model_name,
+                'type': model_type,
+                'module': model.get('module', None),
+                'protocol': protocol,
             }
-            
+
+            if protocol == 'bench' and cfg['module'] is None:
+                if model_type == 'gnn':
+                    cfg['module'] = 'molbench.core.adapters.gnn_adapter'
+                elif model_type == 'text':
+                    cfg['module'] = 'molbench.core.adapters.text_adapter'
+                else:
+                    # 默认尝试直接使用模型名作为类
+                    cfg['module'] = cfg_model_name
+
             # 处理超参配置
             model_n_iter = model.get('n_iter', None) # 模型特定的 n_iter
+            base_params = model.get('params', {}).copy()
+
+            if model_type in ['gnn', 'text']:
+                base_params['model_name'] = original_name
+
             if 'hyperopt_config' in model:
                 # 已有外部 JSON，读取并引用
                 hyperopt = cls._load_hyperopt_json(model['hyperopt_config'])
-                cfg['fixed_params'] = hyperopt.get('fixed_params', {}) or {}
+                cfg['fixed_params'] = {**hyperopt.get('fixed_params', {}), **base_params}
                 cfg['skopt_space'] = hyperopt.get('skopt_space') or []
                 cfg['n_iter'] = model_n_iter or hyperopt.get('n_iter') or global_n_iter
             elif 'hyperopt' in model:
                 # 内联配置
                 hyperopt = model['hyperopt']
-                cfg['fixed_params'] = hyperopt.get('fixed_params', {}) or {}
+                cfg['fixed_params'] = {**hyperopt.get('fixed_params', {}), **base_params}
                 cfg['skopt_space'] = hyperopt.get('space') or []
                 cfg['n_iter'] = model_n_iter or hyperopt.get('n_iter') or global_n_iter
             else:
                 # 无超参优化，使用默认参数
-                cfg['fixed_params'] = model.get('params', {}) or {}
+                cfg['fixed_params'] = base_params
                 cfg['skopt_space'] = []
                 cfg['n_iter'] = 1
             
-            json_configs[name] = cfg
+            json_configs[original_name] = cfg
         
         return json_configs
     

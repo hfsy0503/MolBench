@@ -30,7 +30,7 @@
         "num_classes": 1,
         "kw": null,
         "max_len": 128,
-        "epochs": 20,
+        "epochs": 5,
         "batch_size":32,
         "pooling":"cls",
         "random_state":42,

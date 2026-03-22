@@ -3,12 +3,12 @@
 # 数据集配置
 dataset:
   name: ESOL                    # 数据集名称
-  path: molbench/core/data/datasets/delaney-processed.csv  # 数据集本地路径
+  path: core/data/datasets/delaney-processed.csv  # 数据集本地路径
   task_type: regression
   smiles_col:
    - smiles
   target_cols:
-   - ESOL predicted log solubility in mols per litre
+   - measured log solubility in mols per litre
   split:
     method: random              # 划分方法：random, scaffold, stratified, time
     train_ratio: 0.7
@@ -26,16 +26,10 @@ models:
     protocol: sklearn
     
     hyperopt_config: test/random_forest_regressor.json
-  
-  # 多模型对比示例（取消注释启用）
-  # - name: GCN
-  #   type: gnn
-  #   protocol: bench
-  #   hyperopt_config: test/GCN.json
 
 # 特征化配置（sklearn模型）
 featurizer:
-  name: ecfp                    # ecfp, coulomb, mol2vec, rdkit2d……
+  name: ecfp 
   params:
     radius: 2
     n_bits: 2048

@@ -52,7 +52,7 @@ def run_benchmark(
     featurizer_params: Dict[str, Any],
     
     # 评测参数
-    extra_metrics: Any,
+    extra_metrics: Any = None,
     split_method: str = 'random',
     split_seed: int = 42,
 

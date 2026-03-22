@@ -9,13 +9,5 @@ __all__ = ['run_benchmark', 'run_cli']
 def run(config):
     """
     支持库调用的包装
-    
-    使用方法：
-    import molbench
-    config = {
-        "dataset": "ESOL",
-        "models": [{"name": "ChemBERTa2", ...}]
-    }
-    results = molbench.run(config)
     """
     return run_benchmark(config)

@@ -22,7 +22,11 @@ setup(
         'pyyaml>=5.3.0',
         'rdkit>=2021.03.1',
         'torch>=1.9.0',
-        'deepchem>=2.7.0',     
+        'torch_geometric>=2.7.0',
+        'deepchem>=2.7.0', 
+        'matplotlib',
+        'seaborn',
+        'transformers'
     ],
     entry_points={
         'console_scripts': [

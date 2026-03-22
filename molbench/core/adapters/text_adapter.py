@@ -153,7 +153,12 @@ class TextModel(BenchModel, ABC, nn.Module):
 
         # 1. 数据准备
         enc = self._tokenize(X)
-        y_tensor = torch.tensor(y_scaled, dtype=torch.float if self.task_type=='regression' else torch.long)
+        if self.task_type == 'regression':
+            y_tensor = torch.tensor(y_scaled, dtype=torch.float)
+        elif self.task_type == 'binary':
+            y_tensor = torch.tensor(y_scaled, dtype=torch.float)
+        else:  # multiclass
+            y_tensor = torch.tensor(y_scaled, dtype=torch.long)
         
         from torch.utils.data import DataLoader, TensorDataset
         dataset = TensorDataset(enc['input_ids'], enc['attention_mask'], y_tensor)
@@ -191,16 +196,19 @@ class TextModel(BenchModel, ABC, nn.Module):
                 optimizer.zero_grad()
 
                 outputs = self(input_ids, att, labels=yb)
-                if hasattr(outputs, 'loss'):
+                if hasattr(outputs, 'logits'):
+                    logits = outputs.logits
+                    if self.task_type in ('regression', 'binary'):
+                        logits = logits.squeeze(-1)
+                        if yb.dim() > 1:
+                            yb = yb.squeeze(-1)
+                    loss = self.loss_fn(logits, yb)
+                elif hasattr(outputs, 'loss'):
                     loss = outputs.loss
                 elif isinstance(outputs, dict) and 'loss' in outputs:
                     loss = outputs['loss']
                 else:
-                    # 兼容旧格式
-                    logits = outputs.logits if hasattr(outputs, 'logits') else outputs
-                    if self.task_type in ('regression', 'binary'):
-                        logits = logits.squeeze()
-                    loss = self.loss_fn(logits, yb)
+                    raise ValueError("无法获取 logits 或 loss")
 
                 loss.backward()
                 torch.nn.utils.clip_grad_norm_(self.parameters(), max_norm=1.0)
@@ -508,7 +516,7 @@ class MolFormerForSequenceClassification(TextModel):
             if self.num_labels == 1:
                 # 回归
                 loss_fct = nn.MSELoss()
-                loss = loss_fct(logits.squeeze(), labels.float())
+                loss = loss_fct(logits.view(-1), labels.float().view(-1))
             else:
                 # 分类
                 loss_fct = nn.CrossEntropyLoss()
@@ -786,8 +794,13 @@ class HFTextModel(TextModel):
         if labels is not None:
             logits = outputs.logits
             if self.task_type in ('regression', 'binary'):
-                logits = logits.squeeze()
-            loss = self.loss_fn(logits, labels)
+                logits = logits.squeeze(-1)
+                if labels.dim() > 1:
+                    labels = labels.squeeze(-1)
+                target = labels.float() if self.task_type == 'binary' else labels
+                loss = self.loss_fn(logits, target)
+            else:
+                loss = self.loss_fn(logits, labels.long())
             
             # 返回带 loss 的输出对象
             from transformers.modeling_outputs import SequenceClassifierOutput
@@ -891,9 +904,10 @@ class DeepChemTextCNN(TextModel):
         preds = self.model.predict(dataset)
         
         if self.task_type == 'regression':
-            return preds.squeeze()
+            return preds.squeeze(-1)
         elif self.task_type == 'binary':
-            return (preds >= 0.5).astype(int).squeeze()
+            probs = preds.squeeze(-1)
+            return (probs >= 0.5).astype(int)
         else:
             return preds.argmax(axis=1)
     

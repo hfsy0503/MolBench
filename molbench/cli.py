@@ -41,7 +41,7 @@ def create_parser():
     
     # 内置模板模式
     mode_group.add_argument('-t', '--template',
-                           choices=['basic', 'multi_model', 'advanced'],
+                           choices=['basic', 'advanced'],
                            help='使用内置配置模板（无需指定路径）')
     
     # 配置文件模式
@@ -50,7 +50,7 @@ def create_parser():
     
     # 生成配置模式
     mode_group.add_argument('-g', '--generate-config',
-                           choices=['basic', 'multi_model', 'advanced'],
+                           choices=['basic', 'advanced'],
                            help='生成配置文件模板')
     
     # 生成配置时的输出路径
@@ -169,7 +169,7 @@ def main():
     
     # 列出模板
     if args.list_templates:
-        templates = ConfigGenerator.list_templates()
+        templates = ConfigGenerator.TEMPLATES.items()
         print("可用配置模板:")
         for t in templates:
             print(f"  - {t}")
@@ -185,7 +185,7 @@ def main():
     
     # 模式2: 使用内置模板
     if args.template:
-        config_path = Path(__file__).parent / "configs" / f"{args.template}.yaml"
+        config_path = Path(__file__).parent / "configs" / "templates" /f"{args.template}.yaml"
         if not config_path.exists():
             print(f"❌ 内置模板不存在: {config_path}")
             print(f"   请检查 molbench/configs/ 目录")
