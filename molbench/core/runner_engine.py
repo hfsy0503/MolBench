@@ -258,34 +258,6 @@ def run_benchmark(
                 cache_task_id=task_id if cache_enabled else None,
                 n_iter=n_iter,
             )
-
-            # ========== 添加详细调试 ==========
-            print(f"\n🔥 optimization 返回结果:")
-            print(f"  best_models_text keys: {list(best_models_text.keys())}")
-            print(f"  results_text keys: {list(results_text.keys())}")
-            
-            for name, model in best_models_text.items():
-                print(f"\n  🔥 模型 {name}:")
-                print(f"    类型: {type(model)}")
-                if model is not None:
-                    print(f"    是否有 predict: {hasattr(model, 'predict')}")
-                    print(f"    predict 是否可调用: {callable(getattr(model, 'predict', None))}")
-                    print(f"    是否有 forward: {hasattr(model, 'forward')}")
-            
-            # 过滤掉 None 模型
-            best_models_text = {k: v for k, v in best_models_text.items() if v is not None}
-            
-            # 确保每个模型都有可调用的 predict 方法
-            for name in list(best_models_text.keys()):
-                model = best_models_text[name]
-                if not hasattr(model, 'predict') or not callable(model.predict):
-                    print(f"  ⚠️ 模型 {name} 的 predict 方法无效，移除")
-                    del best_models_text[name]
-                    if name in results_text:
-                        del results_text[name]
-            
-            print(f"🔥 过滤后 best_models_text keys: {list(best_models_text.keys())}")
-            # ========== 调试结束 ==========
             
             all_best_models.update(best_models_text)
             all_results.update(results_text)

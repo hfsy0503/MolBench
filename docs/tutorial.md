@@ -55,29 +55,32 @@
 ## 🚀 快速开始
 
 让我们从简单的评测任务运行开始。
+### 方式一：交互式（最简单的启动方式）
 
-### 方式一：生成模板，然后运行
+直接运行交互式模式，跟随提示完成评测：
+```bash
+python -m molbench
+```
+
+系统会引导您：
+
+1. 选择数据集（或指定数据文件路径）
+2. 选择目标列和任务类型
+3. 选择模型（传统/GNN/Transformer+Text）
+4. 配置评测参数
+5. 自动运行并显示结果
+
+### 方式二：使用配置文件（适合批量实验）
 
 ```bash
+# 生成配置模板：
+molbench -g basic -o my_config.yaml
+
+# 编辑配置文件后，运行：
 molbench -c my_config.yaml -o results/
 ```
+💡 如需将 MolBench 集成到自己的工作流中，请参考 Python API 使用 章节。
 
-### 方式二：使用 Python API
-
-```python
-import molbench
-
-# 运行评测
-results = molbench.run(
-    df=df,                    # 包含 SMILES 和标签的 DataFrame
-    smiles_col='smiles',      # SMILES 列名
-    target_cols=['solubility'], # 目标列
-    task_type='regression',   # 或 'binary'
-    sklearn_models={'XGBoostRegressor': config}
-)
-
-print(results)
-```
 
 ## 🧪 CLI 使用
 
@@ -194,20 +197,7 @@ results = run_benchmark(
     cache_enabled=True,
     verbose=True
 )
-
-# 查看结果
-print(results)
-```
-
-### 结果结构
-
-```python
-# results 是一个字典，包含所有模型的结果
-for model_name, model_results in results.items():
-    print(f"模型: {model_name}")
-    print(f"测试集 ROC_AUC: {model_results['test_roc_auc']:.4f}")
-    print(f"验证集 PRC_AUC: {model_results['val_pr_auc']:.4f}")
-    print("---")
+print("✅ 评测完成！")
 ```
 
 ## 📁 配置文件
@@ -221,12 +211,12 @@ for model_name, model_results in results.items():
 ```yaml
 dataset:
   name: ESOL                    
-  path: molbench/core/data/datasets/delaney-processed.csv
+  path: core/data/datasets/delaney-processed.csv
   task_type: regression
   smiles_col:
    - smiles
   target_cols:
-   - ESOL predicted log solubility in mols per litre
+   - measured log solubility in mols per litre
   split:
     method: random
     train_ratio: 0.7
@@ -239,7 +229,7 @@ models:
   - name: RandomForestRegressor
     type: sklearn
     protocol: sklearn
-    
+    # 模型超参数配置文件（JSON 格式）路径
     hyperopt_config: test/random_forest_regressor.json
 featurizer:
   name: ecfp                    
